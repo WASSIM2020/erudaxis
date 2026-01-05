@@ -115,8 +115,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.4</version> <!-- Latest stable -->
                 <configuration>
-                    <testFailureIgnore>true</testFailureIgnore> <!-- Ensures JSON generates even on failures -->
-                    <!-- No need for explicit includes - Surefire auto-detects Cucumber Runner -->
+                   <includes>
+                        <include>**/*Runner.java</include>
+                    </includes>
                 </configuration>
             </plugin>
 
