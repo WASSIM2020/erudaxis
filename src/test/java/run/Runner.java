@@ -1,25 +1,24 @@
 package run;
 
-import org.junit.runner.RunWith;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
+import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        tags = "@tag_cantine",
-        features = "src/test/features/Ajout_collaborateur.feature",  // ← Un seul fichier : chemin correct, sans virgule ni espace
-        // Si plusieurs fichiers : features = {"src/test/features/Ajout_repas.feature", "src/test/features/Login.feature"},
-        glue = {"hooks", "stepDefinition"},
-        publish = true,
-        plugin = {
-                "pretty",
-                "html:target/cucumber-report.html",
-                "json:target/cucumber-report.json",
-                "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"
-        },
-        monochrome = true,  // Ajouté pour console propre
-        dryRun = false
+    tags = "@tag_cantine",                                          // Your tag
+    features = "src/test/features/Ajout_collaborateur.feature",     // Correct path
+    glue = {"hooks", "stepDefinition"},                             // Your packages
+    monochrome = true,                                              // Clean console output
+    dryRun = false,                                                 // Run actual tests
+    publish = true,                                                 // Enables Cucumber public reports link in console
+
+    plugin = {
+        "pretty",                                                   // Console pretty print
+        "html:target/cucumber-html-report",                         // Standard HTML report
+        "json:target/cucumber.json",                                // ← CRITICAL: Standard name & location for Jenkins plugin
+        "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"  // ← ExtentReports (keeps your beautiful HTML/PDF reports)
+    }
 )
 public class Runner {
 }
-
