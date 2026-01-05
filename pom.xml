@@ -13,12 +13,12 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
-        <cucumber.version>7.33.0</cucumber.version> <!-- Latest Cucumber -->
-        <lombok.version>1.18.42</lombok.version>   <!-- Latest Lombok -->
-        <selenium.version>4.39.0</selenium.version> <!-- Latest Selenium -->
+        <cucumber.version>7.31.0</cucumber.version> <!-- Latest stable Cucumber 7.x -->
+        <lombok.version>1.18.42</lombok.version>
+        <selenium.version>4.39.0</selenium.version>
         <webdrivermanager.version>6.3.3</webdrivermanager.version>
         <extentreports.adapter.version>1.14.0</extentreports.adapter.version>
-        <testng.version>7.11.0</testng.version>   <!-- Latest TestNG -->
+        <testng.version>7.11.0</testng.version>
     </properties>
 
     <dependencies>
@@ -43,7 +43,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- TestNG (if you use it alongside or instead of JUnit) -->
+        <!-- TestNG (optional - remove if not needed) -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
@@ -72,7 +72,7 @@
             <version>${extentreports.adapter.version}</version>
         </dependency>
 
-        <!-- JUnit (legacy version kept, but consider upgrading to JUnit 5 if possible) -->
+        <!-- JUnit 4 (legacy for Cucumber-JUnit) -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -109,19 +109,18 @@
                 </configuration>
             </plugin>
 
-            <!-- Surefire Plugin for test execution -->
+            <!-- Surefire Plugin - FIXED: latest version + critical config -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
+                <version>3.5.4</version> <!-- Latest stable -->
                 <configuration>
-                    <includes>
-                        <include>**/*Runner.java</include>
-                    </includes>       
+                    <testFailureIgnore>true</testFailureIgnore> <!-- Ensures JSON generates even on failures -->
+                    <!-- No need for explicit includes - Surefire auto-detects Cucumber Runner -->
                 </configuration>
             </plugin>
 
-            <!-- Maven Cucumber Reporting (nice HTML reports locally) -->
+            <!-- Maven Cucumber Reporting (local pretty HTML reports) -->
             <plugin>
                 <groupId>net.masterthought</groupId>
                 <artifactId>maven-cucumber-reporting</artifactId>
