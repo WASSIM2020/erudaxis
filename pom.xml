@@ -1,121 +1,108 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>wassim</groupId>
-  <artifactId>erudaxis</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+    <groupId>wassim</groupId>
+    <artifactId>erudaxis</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
-  <name>erudaxis</name>
-  <url>http://maven.apache.org</url>
+    <name>erudaxis</name>
+    <url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>17</java.version> <!-- Adjust to 11 or 8 if your Jenkins uses older Java -->
+        <selenium.version>4.39.0</selenium.version>
+        <lombok.version>1.18.34</lombok.version> <!-- Latest as of early 2026; safe for Java 17+ -->
+    </properties>
 
-   <dependencies>
+    <dependencies>
+        <!-- Lombok - REQUIRED to fix the IllegalAccessError -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
+        <!-- Testing frameworks -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
 
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.8.8</version> <!-- Consider updating to 7.x+ if possible -->
+        </dependency>
 
-<dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>7.9.0</version>
+            <scope>test</scope>
+        </dependency>
 
-<groupId>junit</groupId>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>7.9.0</version>
+        </dependency>
 
-<artifactId>junit</artifactId>
+        <!-- Selenium - cleaned duplicate entries -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
 
-<version>4.12</version>
+        <!-- Extent Reports for Cucumber -->
+        <dependency>
+            <groupId>tech.grasshopper</groupId>
+            <artifactId>extentreports-cucumber7-adapter</artifactId>
+            <version>1.9.2</version>
+        </dependency>
 
-<scope>test</scope>
+        <!-- WebDriverManager -->
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>5.5.3</version>
+            <scope>test</scope>
+        </dependency>
 
-</dependency>
+        <!-- Disable noisy logs -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>2.0.13</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
-
-
-<dependency>
-
-<groupId>io.cucumber</groupId>
-
-<artifactId>cucumber-junit</artifactId>
-
-<version>7.9.0</version>
-
-<scope>test</scope>
-
-</dependency>
-
-
-
-<!-- https://mvnrepository.com/artifact/org.testng/testng -->
-<dependency>
-<groupId>org.testng</groupId>
-<artifactId>testng</artifactId>
-<version>6.8.8</version>
-</dependency>
-<dependency>
-    <groupId>org.seleniumhq.selenium</groupId>
-    <artifactId>selenium-java</artifactId>
-    <version>4.39.0</version>
-</dependency>
-
-
-<dependency>
-
-<groupId>io.cucumber</groupId>
-
-<artifactId>cucumber-java</artifactId>
-
-<version>7.9.0</version>
-
-</dependency>
-
-<!--https://mvnrepository.com/artifact/tech.grasshopper/extentreports-cucumber7-adapter -->
-
-
-
-<dependency>
-
-<groupId>tech.grasshopper</groupId>
-
-<artifactId>extentreports-cucumber7-adapter</artifactId>
-
-<version>1.9.2</version>
-
-</dependency>
-
-
-<!-- Pour désactiver complètement les logs (recommandé si vous n'en avez pas besoin) -->
-<dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-nop</artifactId>
-    <version>2.0.13</version> <!-- ou la version compatible avec votre SLF4J -->
-    <scope>test</scope>
-</dependency>
-
-
-<dependency>
-
-<groupId>org.seleniumhq.selenium</groupId>
-
-<artifactId>selenium-java</artifactId>
-
-<version>4.33.0</version>
-
-</dependency>
-
-
-
-<dependency>
-
-<groupId>io.github.bonigarcia</groupId>
-
-<artifactId>webdrivermanager</artifactId>
-
-<version>5.5.3</version>
-
-<scope>test</scope>
-
-</dependency>
-
-</dependencies>
+    <build>
+        <plugins>
+            <!-- Maven Compiler Plugin - essential for modern Java + Lombok -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
