@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
     features = "features/Ajout_collaborateur.feature",  // parfait, car sous src/test/resources/features
     // ou features = "features" pour exécuter tous les .feature du dossier
 
-    glue = "StepDef",  // à ajuster si ton package de steps est différent (ex: "stepdef" ou "stepDefinition")
+    glue = "stepDefinition",  // à ajuster si ton package de steps est différent (ex: "stepdef" ou "stepDefinition")
 
     monochrome = true,
 
