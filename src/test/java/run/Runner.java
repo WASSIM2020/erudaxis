@@ -10,7 +10,7 @@ import io.cucumber.junit.CucumberOptions;
 
 @CucumberOptions(
 
-		features = {"src/test/resources/features/Ajout_collaborateur.feature"},
+		features = {"features/Ajout_collaborateur.feature"},
 
 		glue="StepDef",
 
