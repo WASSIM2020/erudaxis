@@ -1,0 +1,25 @@
+package run;
+
+import org.junit.runner.RunWith;
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+        tags = "@tag_cantine",
+        features = "src/test/features/Ajout_collaborateur.feature",  // ← Un seul fichier : chemin correct, sans virgule ni espace
+        // Si plusieurs fichiers : features = {"src/test/features/Ajout_repas.feature", "src/test/features/Login.feature"},
+        glue = {"hooks", "stepDefinition"},
+        publish = true,
+        plugin = {
+                "pretty",
+                "html:target/cucumber-report.html",
+                "json:target/cucumber-report.json",
+                "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"
+        },
+        monochrome = true,  // Ajouté pour console propre
+        dryRun = false
+)
+public class Runner {
+}
+
