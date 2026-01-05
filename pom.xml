@@ -12,13 +12,17 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>17</java.version> <!-- Adjust to 11 or 8 if your Jenkins uses older Java -->
-        <selenium.version>4.39.0</selenium.version>
-        <lombok.version>1.18.34</lombok.version> <!-- Latest as of early 2026; safe for Java 17+ -->
+        <java.version>17</java.version>
+        <cucumber.version>7.33.0</cucumber.version> <!-- Latest Cucumber -->
+        <lombok.version>1.18.42</lombok.version>   <!-- Latest Lombok -->
+        <selenium.version>4.39.0</selenium.version> <!-- Latest Selenium -->
+        <webdrivermanager.version>6.3.3</webdrivermanager.version>
+        <extentreports.adapter.version>1.14.0</extentreports.adapter.version>
+        <testng.version>7.11.0</testng.version>   <!-- Latest TestNG -->
     </properties>
 
     <dependencies>
-        <!-- Lombok - REQUIRED to fix the IllegalAccessError -->
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -26,7 +30,49 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Testing frameworks -->
+        <!-- Cucumber -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- TestNG (if you use it alongside or instead of JUnit) -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+        </dependency>
+
+        <!-- Selenium -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+
+        <!-- WebDriverManager -->
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- ExtentReports Cucumber7 Adapter -->
+        <dependency>
+            <groupId>tech.grasshopper</groupId>
+            <artifactId>extentreports-cucumber7-adapter</artifactId>
+            <version>${extentreports.adapter.version}</version>
+        </dependency>
+
+        <!-- JUnit (legacy version kept, but consider upgrading to JUnit 5 if possible) -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -34,48 +80,7 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>6.8.8</version> <!-- Consider updating to 7.x+ if possible -->
-        </dependency>
-
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit</artifactId>
-            <version>7.9.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <version>7.9.0</version>
-        </dependency>
-
-        <!-- Selenium - cleaned duplicate entries -->
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>${selenium.version}</version>
-        </dependency>
-
-        <!-- Extent Reports for Cucumber -->
-        <dependency>
-            <groupId>tech.grasshopper</groupId>
-            <artifactId>extentreports-cucumber7-adapter</artifactId>
-            <version>1.9.2</version>
-        </dependency>
-
-        <!-- WebDriverManager -->
-        <dependency>
-            <groupId>io.github.bonigarcia</groupId>
-            <artifactId>webdrivermanager</artifactId>
-            <version>5.5.3</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Disable noisy logs -->
+        <!-- Silence logs -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
@@ -86,7 +91,7 @@
 
     <build>
         <plugins>
-            <!-- Maven Compiler Plugin - essential for modern Java + Lombok -->
+            <!-- Compiler Plugin with Lombok support -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -102,6 +107,40 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+
+            <!-- Surefire Plugin for test execution -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.4</version>
+                <configuration>
+                    <testFailureIgnore>true</testFailureIgnore> <!-- Allows reporting even on failures -->
+                </configuration>
+            </plugin>
+
+            <!-- Maven Cucumber Reporting (nice HTML reports locally) -->
+            <plugin>
+                <groupId>net.masterthought</groupId>
+                <artifactId>maven-cucumber-reporting</artifactId>
+                <version>5.10.1</version>
+                <executions>
+                    <execution>
+                        <id>generate-cucumber-reports</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <projectName>erudaxis</projectName>
+                            <outputDirectory>target/cucumber-html-reports</outputDirectory>
+                            <inputDirectory>target</inputDirectory>
+                            <jsonFiles>
+                                <param>**/cucumber-report.json</param>
+                            </jsonFiles>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
