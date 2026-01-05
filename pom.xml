@@ -43,13 +43,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- TestNG (optional - remove if not needed) -->
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>${testng.version}</version>
-        </dependency>
-
         <!-- Selenium -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
