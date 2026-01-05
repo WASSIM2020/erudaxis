@@ -113,9 +113,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.4</version>
+                <version>3.2.5</version>
                 <configuration>
-                    <testFailureIgnore>true</testFailureIgnore> <!-- Allows reporting even on failures -->
+                    <inclut>
+                             <incluent>**/Runner.java</incluent>
+                    </inclut>         
                 </configuration>
             </plugin>
 
