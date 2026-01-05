@@ -115,9 +115,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <inclut>
-                             <incluent>**/Runner.java</incluent>
-                    </inclut>         
+                    <includes>
+                        <include>**/*Runner.java</include>
+                    </includes>       
                 </configuration>
             </plugin>
 
