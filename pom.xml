@@ -110,14 +110,14 @@
             </plugin>
 
             <!-- Surefire Plugin for test execution -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.4</version>
-                <configuration>
-                    <testFailureIgnore>true</testFailureIgnore> <!-- Allows reporting even on failures -->
-                </configuration>
-            </plugin>
+          <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>3.5.4</version> <!-- Latest stable -->
+    <configuration>
+        <testFailureIgnore>true</testFailureIgnore> <!-- Critical: Allows reporting even if tests fail -->
+    </configuration>
+</plugin>
 
             <!-- Maven Cucumber Reporting (nice HTML reports locally) -->
             <plugin>
