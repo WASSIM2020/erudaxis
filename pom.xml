@@ -136,7 +136,7 @@
                             <outputDirectory>target/cucumber-html-reports</outputDirectory>
                             <inputDirectory>target</inputDirectory>
                             <jsonFiles>
-                                <param>**/cucumber-report.json</param>
+                                <param>**/cucumber.json</param>
                             </jsonFiles>
                         </configuration>
                     </execution>
