@@ -1,25 +1,20 @@
 package run;
 
-import io.cucumber.junit.Cucumber;
-import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
 
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
+
 @RunWith(Cucumber.class)
+
 @CucumberOptions(
-
-    features = "features",
-
-    glue = "stepDefinition",
-
-    monochrome = true,
-
-    plugin = {
-        "pretty",                          // Beautiful console output
-        "html:target/cucumber-html-report", // Basic HTML report
-        "json:target/cucumber.json",       // ← REQUIRED for Jenkins Cucumber Reports plugin
-        "junit:target/cucumber.xml"        // Optional: JUnit XML report
-    }
-
-)
+		
+		features="features/Ajout_collaborateur.feature",
+		glue={"hooks","stepDefinition"},
+		publish=true,
+		plugin = {"pretty","html:target/cucumber-report.html","json:target/cucumber-reportJson","com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"} 
+		
+		)
 public class Runner {
+
 }
