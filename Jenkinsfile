@@ -3,45 +3,56 @@ pipeline {
 
     tools {
         maven 'maven'
-        jdk 'JAVA_HOME'
+    }
+
+    environment {
+        CUCUMBER_JSON = 'target/cucumber.json'
+        CUCUMBER_HTML = 'target/cucumber-report.html'
     }
 
     stages {
 
         stage('Checkout') {
             steps {
-                git 'https://github.com/WASSIM2020/erudaxis.git'
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/master']],
+                    userRemoteConfigs: [[url: 'https://github.com/WASSIM2020/erudaxis.git']]
+                ])
             }
         }
 
-        stage('Build') {
+        stage('Install Dependencies') {
             steps {
-                bat 'mvn clean install -U DskipTests'
+                bat 'mvn clean install -U -DskipTests'
             }
         }
 
-        stage('Tests') {
+        stage('Run Cucumber Tests') {
             steps {
                 bat 'mvn test'
+            }
+        }
+
+        stage('Archive Reports') {
+            steps {
+                archiveArtifacts artifacts: "${CUCUMBER_JSON}, ${CUCUMBER_HTML}, /**", allowEmptyArchive: false
             }
         }
     }
 
     post {
         always {
-            publishHTML([
-                reportDir: 'target/cucumber-reports',
-                reportFiles: 'index.html',
-                reportName: 'Cucumber Report'
-            ])
-        }
+            script {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                    cucumber(
+                        jsonReportDirectory: 'target',
+                        fileIncludePattern: '**/cucumber.json'
+                    )
+                }
+            }
 
-        failure {
-            echo '❌ Les tests ont échoué'
-        }
-
-        success {
-            echo '✅ Build et tests OK'
+            junit allowEmptyResults: true, testResults: 'target/surefire-reports/**/*.xml'
         }
     }
 }
